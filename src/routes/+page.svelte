@@ -1,6 +1,30 @@
-<!-- Simple Portfolio Layout - Step 1 -->
+<!-- Simple Portfolio Layout with Slideshow -->
 <script>
 	import { projects } from '$lib/projects.js';
+	
+	// Simple slideshow state - one slide index per project
+	let currentSlides = projects.reduce((acc, project) => {
+		acc[project.id] = 1; // Start at slide 1
+		return acc;
+	}, {});
+
+	function nextSlide(projectId) {
+		const project = projects.find(p => p.id === projectId);
+		if (currentSlides[projectId] < project.totalImages) {
+			currentSlides[projectId]++;
+		} else {
+			currentSlides[projectId] = 1; // Loop back to first
+		}
+	}
+
+	function prevSlide(projectId) {
+		const project = projects.find(p => p.id === projectId);
+		if (currentSlides[projectId] > 1) {
+			currentSlides[projectId]--;
+		} else {
+			currentSlides[projectId] = project.totalImages; // Loop to last
+		}
+	}
 </script>
 
 <svelte:head>
@@ -12,12 +36,32 @@
 <main class="portfolio">
 	{#each projects as project}
 		<section class="project-section">
-			<!-- Simple image display -->
-			<img 
-				src="/images/{project.name}_1_161223_paul_linus_weilandt.jpg"
-				alt={project.displayName}
-				class="project-image"
-			/>
+			<!-- Slideshow image with click areas -->
+			<div class="image-container">
+				<img 
+					src="/images/{project.name}_{currentSlides[project.id]}_161223_paul_linus_weilandt.jpg"
+					alt="{project.displayName} - Image {currentSlides[project.id]}"
+					class="project-image"
+				/>
+				
+				<!-- Click areas for navigation -->
+				<button 
+					class="nav-area nav-left"
+					onclick={() => prevSlide(project.id)}
+					aria-label="Previous image"
+				></button>
+				
+				<button 
+					class="nav-area nav-right"
+					onclick={() => nextSlide(project.id)}
+					aria-label="Next image"
+				></button>
+				
+				<!-- Slide indicator -->
+				<div class="slide-indicator">
+					{currentSlides[project.id]} / {project.totalImages}
+				</div>
+			</div>
 			
 			<!-- Project info overlay -->
 			<div class="project-info">
@@ -49,15 +93,60 @@
 		text-transform: uppercase;
 	}
 
-	.project-image {
+	.image-container {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
+	}
+
+	.project-image {
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
 		object-position: center;
 		filter: grayscale(100%);
+		transition: filter 0.3s ease;
+	}
+
+	.project-section:hover .project-image {
+		filter: grayscale(0%);
+	}
+
+	.nav-area {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 50%;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		z-index: 5;
+	}
+
+	.nav-left {
+		left: 0;
+	}
+
+	.nav-right {
+		right: 0;
+	}
+
+	.nav-area:hover {
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	.slide-indicator {
+		position: absolute;
+		bottom: 1rem;
+		right: 1rem;
+		background: rgba(0, 0, 0, 0.5);
+		color: white;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: var(--font-size-body-sm);
+		z-index: 6;
 	}
 
 	.project-info {
