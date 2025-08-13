@@ -1,3 +1,73 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/* TailwindCSS v4.0 Theme Configuration */
+@theme {
+  /* Custom Colors for 161223 Design */
+  --color-primary: oklch(0% 0 0); /* #000000 */
+  --color-secondary: oklch(100% 0 0); /* #ffffff */
+  --color-background: oklch(100% 0 0); /* #ffffff */
+  --color-foreground: oklch(0% 0 0); /* #000000 */
+  
+  /* Typography Scale - using TailwindCSS naming */
+  --font-mono: 'CourierPrime', 'Courier New', monospace;
+  --font-size-headline: 1.6rem;
+  --font-size-headline-sm: 1.2rem;
+  --font-size-body: 1rem;
+  --font-size-body-sm: 0.7rem;
+  
+  /* Spacing & Layout */
+  --spacing-inline: 0.5rem;
+  --spacing-block: 1rem;
+  --section-height: 77vh;
+  --section-height-full: 100vh;
+  
+  /* Custom Breakpoint */
+  --breakpoint-portfolio: 819px;
+}
+
+/* Additional CSS Custom Properties */
+:root {
+  --line-height: 1.2;
+  --opacity-reduced: 0.77;
+}
+
+/* Dark mode theme (prepared for future) */
+[data-theme="dark"] {
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+}
+
+/* Base styles */
+body {
+  font-family: theme(--font-mono);
+  color: theme(--color-primary);
+  background-color: theme(--color-background);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Custom Typography Utilities */
+@utility text-headline {
+  font-size: theme(--font-size-headline);
+  line-height: var(--line-height);
+}
+
+@utility text-headline-sm {
+  font-size: theme(--font-size-headline-sm);
+  line-height: var(--line-height);
+}
+
+@utility text-body {
+  font-size: theme(--font-size-body);
+  line-height: var(--line-height);
+}
+
+@utility text-body-sm {
+  font-size: theme(--font-size-body-sm);
+  line-height: var(--line-height);
+}
