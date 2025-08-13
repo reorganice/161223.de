@@ -1,30 +1,81 @@
-<!-- TailwindCSS v4.0 Configuration Test -->
-<div class="min-h-screen bg-background text-primary font-mono">
-	<main class="container mx-auto px-4 py-8">
-		<h1 class="text-headline mb-4 text-primary">161223.de TailwindCSS v4.0 Test</h1>
-		
-		<div class="grid gap-4">
-			<div class="bg-secondary text-foreground p-4 rounded">
-				<h2 class="text-headline-sm mb-2">Custom Colors Working</h2>
-				<p class="text-body">Primary: <span class="bg-primary text-secondary px-2">text-primary</span></p>
-				<p class="text-body">Secondary: <span class="bg-secondary text-primary px-2 border">text-secondary</span></p>
-			</div>
+<!-- Simple Portfolio Layout - Step 1 -->
+<script>
+	import { projects } from '$lib/projects.js';
+</script>
+
+<svelte:head>
+	<title>161223 DESIGN</title>
+	<meta name="description" content="Executive Philosophy, Interior Design & Manufacturing" />
+</svelte:head>
+
+<!-- Simple vertical sections like original -->
+<main class="portfolio">
+	{#each projects as project}
+		<section class="project-section">
+			<!-- Simple image display -->
+			<img 
+				src="/images/{project.name}_1_161223_paul_linus_weilandt.jpg"
+				alt={project.displayName}
+				class="project-image"
+			/>
 			
-			<div class="space-y-2">
-				<h2 class="text-headline-sm">Typography Scale</h2>
-				<p class="text-headline">Headline (1.6rem)</p>
-				<p class="text-headline-sm">Headline Small (1.2rem)</p>
-				<p class="text-body">Body Text (1rem)</p>
-				<p class="text-body-sm">Body Small (0.7rem)</p>
+			<!-- Project info overlay -->
+			<div class="project-info">
+				<h1 class="project-title text-headline text-secondary">
+					{project.displayName}
+				</h1>
+				<div class="project-details text-body text-secondary">
+					<p>{project.type}</p>
+					<p>{project.materials}</p>
+					<p>{project.location} {project.year}</p>
+				</div>
 			</div>
-			
-			<div>
-				<h2 class="text-headline-sm mb-2">Font Family & Weights</h2>
-				<p class="font-mono">Courier Prime Normal</p>
-				<p class="font-mono italic">Courier Prime Italic</p>
-				<p class="font-mono font-bold">Courier Prime Bold</p>
-				<p class="font-mono font-bold italic">Courier Prime Bold Italic</p>
-			</div>
-		</div>
-	</main>
-</div>
+		</section>
+	{/each}
+</main>
+
+<style>
+	.portfolio {
+		background-color: white;
+	}
+
+	.project-section {
+		height: 77vh;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		text-transform: uppercase;
+	}
+
+	.project-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		filter: grayscale(100%);
+	}
+
+	.project-info {
+		position: relative;
+		z-index: 10;
+		text-align: center;
+		padding: var(--spacing-inline);
+		opacity: var(--opacity-reduced);
+		text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+	}
+
+	.project-title {
+		margin-bottom: var(--spacing-block);
+		line-height: var(--line-height);
+	}
+
+	.project-details p {
+		margin: 0;
+		line-height: var(--line-height);
+	}
+</style>
