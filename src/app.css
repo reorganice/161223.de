@@ -2,6 +2,47 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/* Modern Font Loading - Courier Prime */
+@font-face {
+  font-family: 'CourierPrime';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/courier-prime-latin-400-normal.woff2') format('woff2'),
+       url('/fonts/courier-prime-latin-400-normal.woff') format('woff'),
+       url('/fonts/courier-prime-latin-400-normal.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CourierPrime';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('/fonts/courier-prime-latin-400-italic.woff2') format('woff2'),
+       url('/fonts/courier-prime-latin-400-italic.woff') format('woff'),
+       url('/fonts/courier-prime-latin-400-italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CourierPrime';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/courier-prime-latin-700-normal.woff2') format('woff2'),
+       url('/fonts/courier-prime-latin-700-normal.woff') format('woff'),
+       url('/fonts/courier-prime-latin-700-normal.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CourierPrime';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('/fonts/courier-prime-latin-700-italic.woff2') format('woff2'),
+       url('/fonts/courier-prime-latin-700-italic.woff') format('woff'),
+       url('/fonts/courier-prime-latin-700-italic.ttf') format('truetype');
+}
+
 /* TailwindCSS v4.0 Theme Configuration */
 @theme {
   /* Custom Colors for 161223 Design */

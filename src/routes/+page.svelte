@@ -19,8 +19,11 @@
 			</div>
 			
 			<div>
-				<h2 class="text-headline-sm mb-2">Font Family</h2>
-				<p class="font-mono">Courier Prime Monospace Font</p>
+				<h2 class="text-headline-sm mb-2">Font Family & Weights</h2>
+				<p class="font-mono">Courier Prime Normal</p>
+				<p class="font-mono italic">Courier Prime Italic</p>
+				<p class="font-mono font-bold">Courier Prime Bold</p>
+				<p class="font-mono font-bold italic">Courier Prime Bold Italic</p>
 			</div>
 		</div>
 	</main>
