@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			
-			<!-- Project info overlay -->
+			<!-- Project info overlay - moved to left side -->
 			<div class="project-info">
 				<h1 class="project-title text-headline text-secondary">
 					{project.displayName}
@@ -134,28 +134,33 @@
 	}
 
 	.nav-area:hover {
-		background: rgba(0, 0, 0, 0.1);
+		background: rgba(0, 0, 0, 0.03);
 	}
 
 	.slide-indicator {
 		position: absolute;
 		bottom: 1rem;
 		right: 1rem;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(0, 0, 0, 0.2);
 		color: white;
-		padding: 0.25rem 0.5rem;
-		border-radius: 0.25rem;
+		padding: 0.125rem 0.375rem;
+		border-radius: 0.125rem;
 		font-size: var(--font-size-body-sm);
 		z-index: 6;
+		opacity: 0.6;
+		font-weight: normal;
 	}
 
 	.project-info {
-		position: relative;
+		position: absolute;
+		left: var(--spacing-inline);
+		top: 50%;
+		transform: translateY(-50%);
 		z-index: 10;
-		text-align: center;
-		padding: var(--spacing-inline);
+		text-align: left;
 		opacity: var(--opacity-reduced);
 		text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+		pointer-events: none;
 	}
 
 	.project-title {
