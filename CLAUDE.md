@@ -1,44 +1,254 @@
-# 161223.de Website Rebuild - Claude Code Documentation
+# 161223.de Website Rebuild - Complete Documentation
 
 ## 🎯 Project Overview
-Complete rebuild of 161223 interior design portfolio website from SCSS/SvelteKit 1.x to modern TailwindCSS/SvelteKit 2.x stack.
+**COMPLETED**: Full rebuild of 161223 interior design portfolio website from SCSS/SvelteKit 1.x to modern TailwindCSS/SvelteKit 2.x stack.
 
-## 📋 Migration Goals
-- **Remove SCSS** → Replace with TailwindCSS + CSS Custom Properties
-- **Upgrade SvelteKit** 1.x → 2.x with modern best practices
-- **Fix amateur slideshow** → Professional implementation with touch support
-- **Replace svelte-scroller** → Native Intersection Observer
-- **Optimize fonts** → Variable fonts, local hosting, performance
-- **Modern image handling** → AVIF/WebP with responsive srcset
-- **Dark mode preparation** → CSS custom properties structure
+**Live Repository**: https://github.com/reorganice/161223.de
+**Status**: Ready for production deployment via Coolify
 
-## 🚀 Deployment Target
-- **Platform**: Hetzner CAX31 VPS
-- **Git**: Gitea (self-hosted)
-- **Deploy**: Coolify (self-hosted)
-- **Adapter**: Node.js for VPS compatibility
+## ✅ Completed Implementation
 
-## 🛠 Technology Stack
+### Technology Stack
+- **SvelteKit 2.x** with TypeScript + Vite 7
+- **TailwindCSS v4.0** with CSS Custom Properties 
+- **Local Courier Prime fonts** (optimized, performance-first)
+- **Static site generation** with prerendering
+- **GitHub repository** with automated builds
+- **Modern tooling**: ESLint, Prettier, Playwright, Vitest
 
-### Current (Old)
+### Core Features Implemented
+- **Portfolio Structure**: 11 interior design projects with complete data
+- **Click-based Slideshow**: Left half = previous, right half = next image
+- **Visual Effects**: Grayscale to color on hover, smooth transitions
+- **Navigation**: Header with brand link, footer with contact info
+- **Legal Pages**: Impressum and Datenschutz (GDPR compliant)
+- **Responsive Design**: Matches original layout exactly
+- **Performance Optimized**: Local fonts, optimized images, minimal bundle
+
+### File Structure
 ```
-SvelteKit 1.x + Vite
-SCSS with global variables
-@sveltejs/svelte-scroller
-Local fonts + @fontsource (redundant)
-ImageKit CDN (unused)
+161223.de/
+├── src/
+│   ├── routes/
+│   │   ├── +layout.svelte (Header/Footer wrapper)
+│   │   ├── +layout.js (prerender: true for static generation)
+│   │   ├── +page.svelte (Main portfolio with slideshow)
+│   │   ├── Header.svelte (16aul 12inus 23eilandt branding)
+│   │   ├── Footer.svelte (Contact info + legal links)
+│   │   ├── impressum/+page.svelte
+│   │   └── legal/+page.svelte
+│   ├── lib/
+│   │   └── projects.js (All 11 project data)
+│   ├── app.css (TailwindCSS + font definitions + design system)
+│   └── app.html
+├── static/
+│   ├── fonts/ (Courier Prime woff2/woff/ttf files)
+│   ├── images/ (All 77 project images: 11 projects × 7 images each)
+│   ├── favicon.svg
+│   └── favicon.png
+├── package.json (SvelteKit 2.x dependencies)
+├── svelte.config.js (Static adapter configuration)
+├── tailwind.config.js (TailwindCSS v4.0 setup)
+└── CLAUDE.md (This documentation)
 ```
 
-### Target (New) ✅
+## 🎨 Design System Implementation
+
+### TailwindCSS v4.0 Configuration
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* Modern Font Loading */
+@font-face {
+  font-family: 'CourierPrime';
+  font-weight: 400|700;
+  font-style: normal|italic;
+  font-display: swap;
+  src: url('/fonts/courier-prime-*.woff2') format('woff2'), ...;
+}
+
+/* TailwindCSS v4.0 Theme */
+@theme {
+  --color-primary: oklch(0% 0 0);      /* #000000 */
+  --color-secondary: oklch(100% 0 0);   /* #ffffff */
+  --font-mono: 'CourierPrime', 'Courier New', monospace;
+  --font-size-headline: 1.6rem;
+  --font-size-headline-sm: 1.2rem;
+  --font-size-body: 1rem;
+  --font-size-body-sm: 0.7rem;
+}
+
+/* Custom Typography Utilities */
+@utility text-headline { font-size: theme(--font-size-headline); }
+@utility text-headline-sm { font-size: theme(--font-size-headline-sm); }
+@utility text-body { font-size: theme(--font-size-body); }
+@utility text-body-sm { font-size: theme(--font-size-body-sm); }
 ```
-SvelteKit 2.x + Vite + TypeScript
-TailwindCSS + CSS Custom Properties
-Native Intersection Observer
-Variable fonts (local)
-Modern image formats (AVIF/WebP)
-Playwright + Vitest (Testing)
-ESLint + Prettier (Code Quality)
+
+### Portfolio Data Structure
+```javascript
+// src/lib/projects.js
+export const projects = [
+  {
+    id: 0,
+    displayName: 'ÆVE',
+    name: 'aeve',
+    type: 'interior design',
+    materials: 'glass-mirror-resin-crystal',
+    year: '2023',
+    location: 'berlin',
+    totalImages: 7
+  },
+  // ... 10 more projects (trauma, aeden_bar, pal_club, etc.)
+];
 ```
+
+### Slideshow Implementation
+```javascript
+// Simple reactive slideshow state
+let currentSlides = projects.reduce((acc, project) => {
+  acc[project.id] = 1; // Start at slide 1
+  return acc;
+}, {});
+
+function nextSlide(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  currentSlides[projectId] = currentSlides[projectId] < project.totalImages 
+    ? currentSlides[projectId] + 1 
+    : 1; // Loop back to first
+}
+
+function prevSlide(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  currentSlides[projectId] = currentSlides[projectId] > 1 
+    ? currentSlides[projectId] - 1 
+    : project.totalImages; // Loop to last
+}
+```
+
+## 🚀 Production Deployment Configuration
+
+### Static Site Generation
+```javascript
+// svelte.config.js
+import adapter from '@sveltejs/adapter-static';
+
+export default {
+  kit: { 
+    adapter: adapter({
+      pages: 'build',
+      assets: 'build',
+      fallback: undefined,
+      precompress: false,
+      strict: true
+    }),
+    prerender: {
+      handleMissingId: 'warn',
+      handleHttpError: 'warn',
+      entries: ['/', '/impressum', '/legal']
+    }
+  }
+};
+
+// src/routes/+layout.js
+export const prerender = true;
+```
+
+### Coolify Deployment Settings
+```yaml
+Repository: https://github.com/reorganice/161223.de
+Branch: main
+Build Command: npm ci && npm run build
+Publish Directory: build
+Docker Image: nginx:alpine
+
+Build Environment Variables:
+  NODE_ENV: production
+  NODE_VERSION: 20
+```
+
+### Build Output Structure
+```
+build/
+├── index.html (Main portfolio page)
+├── impressum/index.html
+├── legal/index.html
+├── _app/ (SvelteKit generated assets)
+├── fonts/ (Courier Prime font files)
+├── images/ (All 77 project images)
+├── favicon.svg
+└── favicon.png
+```
+
+## 🔧 Development Commands
+```bash
+npm run dev          # Development server (localhost:5173)
+npm run build        # Production build → build/
+npm run preview      # Preview production build
+npm run check        # TypeScript + Svelte check
+npm run lint         # ESLint + Prettier
+npm run test         # Vitest unit tests
+npm run test:e2e     # Playwright E2E tests
+```
+
+## 📝 Project Status & Next Steps
+
+### ✅ Completed (Ready for Production)
+- Complete website rebuild with modern stack
+- All 11 portfolio projects with 7 images each
+- Functional slideshow navigation
+- Responsive design matching original
+- Legal pages (Impressum, Datenschutz)
+- Static site generation working
+- GitHub repository with code
+- Optimized for Coolify deployment
+
+### 🔄 Current Task: Coolify Deployment
+**Ready to deploy** - All configuration provided above.
+
+### 🚀 Future Enhancements (Post-Deployment)
+- Auto-advancing slideshow option
+- Touch/swipe gestures for mobile
+- Modern image formats (AVIF/WebP) with fallbacks
+- Advanced scroll interactions (Intersection Observer)
+- Performance optimizations (image lazy loading)
+- Dark mode implementation (CSS structure ready)
+- Advanced animations and transitions
+
+## 🎯 Key Implementation Decisions
+
+### Why These Choices Were Made:
+- **SvelteKit 2.x**: Latest stable version with modern features
+- **TailwindCSS v4.0**: Latest version with native CSS-first configuration
+- **Static Site**: Portfolio doesn't need server-side rendering
+- **Local Fonts**: Performance + reliability over CDN dependencies
+- **Simple Slideshow**: Robust, accessible, maintainable over complex state management
+- **GitHub**: Industry standard, integrates well with Coolify
+- **nginx:alpine**: Lightweight, secure, perfect for static sites
+
+### Technical Debt Removed:
+- SCSS compilation complexity
+- Redundant font loading (@fontsource + local)
+- svelte-scroller dependency
+- Amateur slideshow implementation with memory leaks
+- Mixed old/new Svelte syntax
+
+---
+
+## 📋 Continuation Instructions
+
+**To continue this project in a new context:**
+
+1. **Repository Location**: https://github.com/reorganice/161223.de
+2. **Local Development**: `cd /Users/mb/Desktop/2-PROJECTS/161223/161223.de && npm run dev`
+3. **Current Status**: Ready for Coolify deployment with configuration above
+4. **Next Immediate Task**: Deploy to Coolify using provided settings
+5. **Architecture**: Fully documented above - no missing pieces
+
+**The website is 100% functional and production-ready.**
 
 ## 📁 Project Structure (Actual)
 ```
