@@ -2,9 +2,12 @@
 NODE_ENV = 'production'
 
 [phases.setup]
-nixPkgs = ['nodejs_22']
+nixPkgs = ['nodejs_20']
+
+[phases.install]
+cmds = ['npm cache clean --force', 'npm install --production=false']
 
 [phases.build]
-cmds = ['npm ci', 'npm run build']
+cmds = ['npm run build']
 
-# Static site - no start command needed
+# Static site deployment - no start phase needed
